@@ -1,5 +1,4 @@
-﻿
-public class Discount
+﻿public class Discount
 {
     public string Discount_ID { get; set; }
     public string Discount_Type { get; set; }
