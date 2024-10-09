@@ -1,3 +1,6 @@
+using System.Runtime.Serialization;
+using System;
+
 [Serializable]
 public abstract class Product : ISerializable
 {
@@ -49,9 +52,9 @@ public abstract class Product : ISerializable
 
     public void ReduceStock(Product product, int amount)
     {
-        if (product.ProductQuantity > 0)
+        if (product.ProductQuantity > 0 && amount < product.ProductQuantity)
         {
-            product.ProductQuantity - amount;
+            product.ProductQuantity -= amount;
         }
         else
         {
@@ -59,18 +62,18 @@ public abstract class Product : ISerializable
         }
     }
 
-    public bool Expired(Product product)
+    public bool Expired()
     {
-        return product.ProductExpired;
+        return ProductExpired;
     }
 
-    public void UpdatePrice(Product product, int newPrice)
+    public void UpdatePrice(int newPrice)
     {
-        product.ProductPrice = newPrice;
+        ProductPrice = newPrice;
     }
 
-    public void UpdateStock(Product product, int newQuantity)
+    public void UpdateStock(int newQuantity)
     {
-        product.ProductQuantity = newQuantity;
+        ProductQuantity = newQuantity;
     }
 }
