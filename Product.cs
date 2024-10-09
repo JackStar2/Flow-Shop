@@ -1,3 +1,6 @@
+using System.Runtime.Serialization;
+using System;
+
 [Serializable]
 public abstract class Product : ISerializable
 {
@@ -15,7 +18,7 @@ public abstract class Product : ISerializable
         ProductName = info.GetString(nameof(ProductName));
         ProductManufacturer = info.GetString(nameof(ProductManufacturer));
         ProductCategory = info.GetString(nameof(ProductCategory));
-        ProductExpired = info.GetBoolean(nameof(ProductExpired));
+        ProductExpired = info.GetDateTime(nameof(ProductExpired));
         ProductQuantity = info.GetInt32(nameof(ProductQuantity));
         ProductPrice = info.GetInt32(nameof(ProductPrice));
     }
@@ -42,16 +45,16 @@ public abstract class Product : ISerializable
         Console.WriteLine($"Product Price: {product.ProductPrice}");
     }
 
-    public bool CheckStock(Product product)
+    public bool CheckStock()
     {
-        return product.ProductQuantity > 0;
+        return ProductQuantity > 0;
     }
 
-    public void ReduceStock(Product product, int amount)
+    public void ReduceStock(int amount)
     {
-        if (product.ProductQuantity > 0)
+        if (ProductQuantity > 0)
         {
-            product.ProductQuantity - amount;
+            ProductQuantity -= amount;
         }
         else
         {
@@ -59,18 +62,18 @@ public abstract class Product : ISerializable
         }
     }
 
-    public bool IsExpired(Product product)
+    public bool IsExpired()
     {
-        return DateTime.Now > product.ProductExpired;
+        return DateTime.Now > ProductExpired;
     }
 
-    public void UpdatePrice(Product product, int newPrice)
+    public void UpdatePrice(int newPrice)
     {
-        product.ProductPrice = newPrice;
+        ProductPrice = newPrice;
     }
 
-    public void UpdateStock(Product product, int newQuantity)
+    public void UpdateStock(int newQuantity)
     {
-        product.ProductQuantity = newQuantity;
+        ProductQuantity = newQuantity;
     }
 }
