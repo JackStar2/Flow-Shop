@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,25 +27,25 @@ namespace OOP_cuoi_ki
         }
 
 
-       public void AddItem(Product product, int quantity)
-{
-    if (product.Expired())
-    {
-        Console.WriteLine($"Product {product.ProductName} đã hết hạn và không thể thêm.");
-        return;
-    }
-    if (!product.CheckStock(quantity))
-    {
-        Console.WriteLine($"Không đủ hàng cho sản phẩm {product.ProductName}.");
-        return;
-    }
+        public void AddItem(Product product, int quantity)
+        {
+            if (product.IsExpired())
+            {
+                Console.WriteLine($"Product {product.ProductName} đã hết hạn và không thể thêm.");
+                return;
+            }
+            if (!product.CheckStock())
+            {
+                Console.WriteLine($"Không đủ hàng cho sản phẩm {product.ProductName}.");
+                return;
+            }
 
-    product.ReduceStock(quantity);
-    product.ProductQuantity = quantity; // Đảm bảo rằng bạn đang cập nhật số lượng đúng
-    Items.Add(product);
-    UpdateTotalPrice();
-    TimeUpdated = DateTime.Now;
-}
+            product.ReduceStock(quantity);
+            product.ProductQuantity = quantity; // Đảm bảo rằng bạn đang cập nhật số lượng đúng
+            Items.Add(product);
+            UpdateTotalPrice();
+            TimeUpdated = DateTime.Now;
+        }
 
         public void RemoveItem(Product product)
         {
@@ -68,11 +68,6 @@ namespace OOP_cuoi_ki
 
         public void Checkout(Transfer transfer)
         {
-            for (int i = 0; i < Items.Count; i++)
-            {
-                transfer.Add_Item(Items[i]);
-            }
-
             decimal total = transfer.Total_Price();
             decimal change = transfer.Exchange();
 
@@ -101,4 +96,3 @@ namespace OOP_cuoi_ki
         }
     }
 }
-   
