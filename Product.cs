@@ -1,4 +1,4 @@
-﻿[Serializable]
+[Serializable]
 public abstract class Product : ISerializable
 {
     public int ProductId { get; set; }
@@ -33,25 +33,25 @@ public abstract class Product : ISerializable
         info.AddValue(nameof(ProductPrice), ProductPrice);
     }
 
-    public void ShowInfo()
+    public void ShowInfo(Product product)
     {
-        Console.WriteLine($"Product ID: {ProductId}");
-        Console.WriteLine($"Product Name: {ProductName}");
-        Console.WriteLine($"Product Expired: {ProductExpired}");
-        Console.WriteLine($"Product Quantity: {ProductQuantity}");
-        Console.WriteLine($"Product Price: {ProductPrice}");
+        Console.WriteLine($"Product ID: {product.ProductId}");
+        Console.WriteLine($"Product Name: {product.ProductName}");
+        Console.WriteLine($"Product Expired: {product.ProductExpired}");
+        Console.WriteLine($"Product Quantity: {product.ProductQuantity}");
+        Console.WriteLine($"Product Price: {product.ProductPrice}");
     }
 
-    public bool CheckStock()
+    public bool CheckStock(Product product)
     {
-        return ProductQuantity > 0;
+        return product.ProductQuantity > 0;
     }
 
-    public void ReduceStock()
+    public void ReduceStock(Product product, int amount)
     {
-        if (ProductQuantity > 0)
+        if (product.ProductQuantity > 0)
         {
-            ProductQuantity--;
+            product.ProductQuantity - amount;
         }
         else
         {
@@ -59,18 +59,18 @@ public abstract class Product : ISerializable
         }
     }
 
-    public bool Expired()
+    public bool Expired(Product product)
     {
-        return ProductExpired;
+        return product.ProductExpired;
     }
 
-    public void UpdatePrice(int newPrice)
+    public void UpdatePrice(Product product, int newPrice)
     {
-        ProductPrice = newPrice;
+        product.ProductPrice = newPrice;
     }
 
-    public void UpdateStock(int newQuantity)
+    public void UpdateStock(Product product, int newQuantity)
     {
-        ProductQuantity = newQuantity;
+        product.ProductQuantity = newQuantity;
     }
 }
