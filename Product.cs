@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using System;
 
 [Serializable]
-public abstract class Product : ISerializable
+public class Product : ISerializable
 {
     public int ProductId { get; set; }
     public string ProductName { get; set; }
@@ -14,26 +14,35 @@ public abstract class Product : ISerializable
 
     protected Product(SerializationInfo info, StreamingContext context)
     {
-        ProductId = info.GetInt32(nameof(ProductId));
-        ProductName = info.GetString(nameof(ProductName));
-        ProductManufacturer = info.GetString(nameof(ProductManufacturer));
-        ProductCategory = info.GetString(nameof(ProductCategory));
-        ProductExpired = info.GetDateTime(nameof(ProductExpired));
-        ProductQuantity = info.GetInt32(nameof(ProductQuantity));
-        ProductPrice = info.GetInt32(nameof(ProductPrice));
+        ProductId = info.GetInt32("ProductId");
+        ProductName = info.GetString("ProductName");
+        ProductManufacturer = info.GetString("ProductManufacturer");
+        ProductCategory = info.GetString("ProductCategory");
+        ProductExpired = info.GetDateTime("ProductExpired");
+        ProductQuantity = info.GetInt32("ProductQuantity");
+        ProductPrice = info.GetInt32("ProductPrice");
     }
 
-    public Product() { }
+    public Product(int id, string name, string manufacturer, string category, DateTime expired, int quantity, int price)
+    {
+        ProductId = id;
+        ProductName = name;
+        ProductManufacturer = manufacturer;
+        ProductCategory = category;
+        ProductExpired = expired;
+        ProductQuantity = quantity;
+        ProductPrice = price;
+    }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
     {
-        info.AddValue(nameof(ProductId), ProductId);
-        info.AddValue(nameof(ProductName), ProductName);
-        info.AddValue(nameof(ProductManufacturer), ProductManufacturer);
-        info.AddValue(nameof(ProductCategory), ProductCategory);
-        info.AddValue(nameof(ProductExpired), ProductExpired);
-        info.AddValue(nameof(ProductQuantity), ProductQuantity);
-        info.AddValue(nameof(ProductPrice), ProductPrice);
+        info.AddValue("ProductId", ProductId);
+        info.AddValue("ProductName", ProductName);
+        info.AddValue("ProductManufacturer", ProductManufacturer);
+        info.AddValue("ProductCategory", ProductCategory);
+        info.AddValue("ProductExpired", ProductExpired);
+        info.AddValue("ProductQuantity", ProductQuantity);
+        info.AddValue("ProductPrice", ProductPrice);
     }
 
     public void ShowInfo(Product product)
