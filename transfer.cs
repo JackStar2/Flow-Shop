@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +8,12 @@ namespace OOP_cuoi_ki
 {
     public class Transfer
     {
-        private int TransferID;
-        private DateTime Date;
+        public int TransferID;
+        public DateTime Date;
         private int CashierID;
         private string PaymentMethod;
         private decimal CustomerMoney;
-        private int CustomerID;
+        private string CustomerID;
         List<Product> ListItem = new List<Product>();
 
         public int Transfer_ID { get => TransferID; set => TransferID = value; }
@@ -21,10 +21,10 @@ namespace OOP_cuoi_ki
         public int Cashier_ID { get => CashierID; set => CashierID = value; }
         public string Payment_Method { get => PaymentMethod; set => PaymentMethod = value; }
         public decimal Customer_Money { get => CustomerMoney; set => CustomerMoney = value; }
-        public int Customer_ID { get => CustomerID; set => CustomerID = value; }
+        public string Customer_ID { get => CustomerID; set => CustomerID = value; }
         public List<Product> List_Item { get => ListItem; set => ListItem = value; }
 
-        public Transfer(int transferID, DateTime date, int cashierID, string paymentMethod, decimal customerMoney, int customerID, List<Product> listItem)
+        public Transfer(int transferID, DateTime date, int cashierID, string paymentMethod, decimal customerMoney, string customerID, List<Product> listItem)
         {
             TransferID = transferID;
             Date = date;
