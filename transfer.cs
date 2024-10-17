@@ -1,75 +1,88 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System;
 
-namespace OOP_cuoi_ki
+[Serializable]
+public class Transfer : ISerializable
 {
-    public class Transfer
+    public int TransferID { get; set; }
+    public DateTime Date { get; set; }
+    public int CashierID { get; set; }
+    public string PaymentMethod { get; set; }
+    public decimal CustomerMoney { get; set; }
+    public string CustomerID { get; set; }
+    public List<Product> ListItem { get; set; } = new List<Product>();
+
+    // Constructor for creating a new Transfer
+    public Transfer(int transferID, DateTime date, int cashierID, string paymentMethod, decimal customerMoney, string customerID, List<Product> listItem)
     {
-        public int TransferID;
-        public DateTime Date;
-        private int CashierID;
-        private string PaymentMethod;
-        private decimal CustomerMoney;
-        private string CustomerID;
-        List<Product> ListItem = new List<Product>();
+        TransferID = transferID;
+        Date = date;
+        CashierID = cashierID;
+        PaymentMethod = paymentMethod;
+        CustomerMoney = customerMoney;
+        CustomerID = customerID;
+        ListItem = listItem;
+    }
 
-        public int Transfer_ID { get => TransferID; set => TransferID = value; }
-        public DateTime Date_ { get => Date; set => Date = value; }
-        public int Cashier_ID { get => CashierID; set => CashierID = value; }
-        public string Payment_Method { get => PaymentMethod; set => PaymentMethod = value; }
-        public decimal Customer_Money { get => CustomerMoney; set => CustomerMoney = value; }
-        public string Customer_ID { get => CustomerID; set => CustomerID = value; }
-        public List<Product> List_Item { get => ListItem; set => ListItem = value; }
+    // Constructor for deserialization
+    protected Transfer(SerializationInfo info, StreamingContext context)
+    {
+        TransferID = info.GetInt32("TransferID");
+        Date = info.GetDateTime("Date");
+        CashierID = info.GetInt32("CashierID");
+        PaymentMethod = info.GetString("PaymentMethod");
+        CustomerMoney = info.GetDecimal("CustomerMoney");
+        CustomerID = info.GetString("CustomerID");
 
-        public Transfer(int transferID, DateTime date, int cashierID, string paymentMethod, decimal customerMoney, string customerID, List<Product> listItem)
+        // Deserialize ListItem
+        ListItem = (List<Product>)info.GetValue("ListItem", typeof(List<Product>));
+    }
+
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        info.AddValue("TransferID", TransferID);
+        info.AddValue("Date", Date);
+        info.AddValue("CashierID", CashierID);
+        info.AddValue("PaymentMethod", PaymentMethod);
+        info.AddValue("CustomerMoney", CustomerMoney);
+        info.AddValue("CustomerID", CustomerID);
+
+        // Serialize ListItem
+        info.AddValue("ListItem", ListItem);
+    }
+
+    public decimal Total_Price()
+    {
+        decimal total = 0;
+        foreach (var item in ListItem)
         {
-            TransferID = transferID;
-            Date = date;
-            CashierID = cashierID;
-            PaymentMethod = paymentMethod;
-            CustomerMoney = customerMoney;
-            CustomerID = customerID;
-            ListItem = listItem;
+            total += item.ProductPrice * item.ProductQuantity;
+        }
+        return total;
+    }
+
+    public decimal Exchange()
+    {
+        decimal total = Total_Price();
+        decimal exchange = CustomerMoney - total;
+
+        if (exchange < 0)
+        {
+            Console.WriteLine("Not enough money to complete the payment.");
+            return 0;
         }
 
-        public decimal Total_Price()
-        {
-            decimal total = 0;
-            for (int i = 0; i < List_Item.Count; i++)
-            {
-                total += List_Item[i].ProductPrice * List_Item[i].ProductQuantity;
-            }
-            return total;
-        }
+        return exchange;
+    }
 
-        public decimal Exchange()
-        {
-            decimal total = Total_Price();
-            decimal exchange = Customer_Money - total;
+    public void Add_Item(Product product)
+    {
+        ListItem.Add(product);
+    }
 
-            if (exchange < 0)
-            {
-                Console.WriteLine("Số tiền không đủ để thanh toán.");
-                return 0;
-            }
-
-            return exchange;
-        }
-
-        public void Add_Item(Product product)
-        {
-            List_Item.Add(product);
-        }
-
-        public void Remove_Item(Product product)
-        {
-            List_Item.Remove(product);
-        }
+    public void Remove_Item(Product product)
+    {
+        ListItem.Remove(product);
     }
 }
-
-
-   
