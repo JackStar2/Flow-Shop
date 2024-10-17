@@ -25,8 +25,6 @@ namespace OOP_cuoi_ki
             TimeUpdated = DateTime.Now;
             Discount = 0;
         }
-
-
         public void AddItem(Product product, int quantity)
         {
             if (product.IsExpired())
@@ -41,7 +39,7 @@ namespace OOP_cuoi_ki
             }
 
             product.ReduceStock(quantity);
-            product.ProductQuantity = quantity; // Đảm bảo rằng bạn đang cập nhật số lượng đúng
+            product.ProductQuantity = quantity; 
             Items.Add(product);
             UpdateTotalPrice();
             TimeUpdated = DateTime.Now;
