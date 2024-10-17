@@ -12,6 +12,17 @@ public class Product : ISerializable
     public int ProductQuantity { get; set; }
     public int ProductPrice { get; set; }
 
+    public Product(int productId, string productName, string productManufacturer, string productCategory, DateTime productExpired, int productQuantity, int productPrice)
+    {
+        ProductId = productId;
+        ProductName = productName;
+        ProductManufacturer = productManufacturer;
+        ProductCategory = productCategory;
+        ProductExpired = productExpired;
+        ProductQuantity = productQuantity;
+        ProductPrice = productPrice;
+    }
+
     protected Product(SerializationInfo info, StreamingContext context)
     {
         ProductId = info.GetInt32("ProductId");
@@ -21,17 +32,6 @@ public class Product : ISerializable
         ProductExpired = info.GetDateTime("ProductExpired");
         ProductQuantity = info.GetInt32("ProductQuantity");
         ProductPrice = info.GetInt32("ProductPrice");
-    }
-
-    public Product(int id, string name, string manufacturer, string category, DateTime expired, int quantity, int price)
-    {
-        ProductId = id;
-        ProductName = name;
-        ProductManufacturer = manufacturer;
-        ProductCategory = category;
-        ProductExpired = expired;
-        ProductQuantity = quantity;
-        ProductPrice = price;
     }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
