@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -32,7 +32,7 @@ public class Storage
     {
         foreach (Product product in Products)
         {
-            if (product.Expired())
+            if (product.IsExpired())
             {
                 Console.WriteLine($"Product {product.ProductName} is expired.");
             }
