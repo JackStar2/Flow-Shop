@@ -3,16 +3,16 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 
-# Function to calculate makespan
+
 def calculate_makespan(jobs, processing_times):
     num_machines = len(processing_times[0])
     num_jobs = len(jobs)
     completion_times = [[0] * num_machines for _ in range(num_jobs)]
-    start_times = [[0] * num_machines for _ in range(num_jobs)]  # To hold start times
-    details = []  # To hold detailed calculations for display
+    start_times = [[0] * num_machines for _ in range(num_jobs)]
+    details = [] 
 
     for j, job in enumerate(jobs):
-        job_details = []  # Details for the current job
+        job_details = [] 
         for m in range(num_machines):
             if m == 0:
                 start_times[j][m] = completion_times[j - 1][m] if j > 0 else 0
@@ -22,10 +22,9 @@ def calculate_makespan(jobs, processing_times):
                 completion_times[j][m] = start_times[j][m] + processing_times[job][m]
 
             job_details.append(
-                (job + 1, m + 1, start_times[j][m], completion_times[j][m]))  # Save job details (1-based indexing)
+                (job + 1, m + 1, start_times[j][m], completion_times[j][m])) 
 
-        details.append(job_details)  # Append job details for all machines
-
+        details.append(job_details)  
     makespan = completion_times[-1][-1]
     return makespan, details
 
@@ -59,36 +58,25 @@ def calculate_orders():
     if jobs is None or processing_times is None:
         return
 
-    # Calculate the optimized order and its makespan
     best_sequence, best_makespan, best_details = flow_shop_backtracking(jobs, processing_times)
-
-    # Calculate the makespan for the original order
-    original_order = jobs[:]  # Copy the original job order
+    original_order = jobs[:] 
     original_makespan, _ = calculate_makespan(original_order, processing_times)
 
-    # Clear the tree view
     for row in tree.get_children():
         tree.delete(row)
 
-    # Insert original order and its makespan into the tree view
     tree.insert("", "end", values=("Original Order", [job + 1 for job in original_order], original_makespan))
-
-    # Insert optimized order and its makespan into the tree view
     tree.insert("", "end", values=("Optimized Order", [job + 1 for job in best_sequence], best_makespan))
-
     optimized_order_str = ", ".join(str(job + 1) for job in best_sequence)
     optimized_order_label.config(text=f"Optimized Order: {optimized_order_str} | Makespan: {best_makespan}")
-
-    # Show detailed calculations for the optimized order
-    optimized_details_str = "Job | Machine | Start | Finish\n"  # Header
-    optimized_details_str += "-" * 40 + "\n"  # Separator
+    optimized_details_str = "Job | Machine | Start | Finish\n" 
+    optimized_details_str += "-" * 40 + "\n" 
 
     for i, details in enumerate(best_details):
         for j, m, start, finish in details:
             optimized_details_str += f"{j:<4} | {m:<7} | {start:<6} | {finish:<6}\n"
-        optimized_details_str += "-" * 40 + "\n"  # Add a line after each job's details
+        optimized_details_str += "-" * 40 + "\n"  
 
-    # Clear previous text and insert new details
     optimized_details_text.delete(1.0, tk.END)
     optimized_details_text.insert(tk.END, optimized_details_str)
 
@@ -96,7 +84,7 @@ def visualize_results():
     if best_sequence is None:
         return
 
-    plot_flow_shop_chart([job + 1 for job in best_sequence])  # Plot with 1-based job IDs
+    plot_flow_shop_chart([job + 1 for job in best_sequence]) 
 
 def plot_flow_shop_chart(sequence):
     num_machines = len(processing_times[0])
@@ -115,7 +103,7 @@ def plot_flow_shop_chart(sequence):
             completion_times[j][m] = starts[j][m] + processing_times[job - 1][m]
 
     plt.figure(figsize=(10, 6))
-    job_colors = ['#FF0000', '#008000', '#008080', '#FFC0CB', '#A52A2A']  # Updated colors
+    job_colors = ['#FF0000', '#008000', '#008080', '#FFC0CB', '#A52A2A'] 
 
     for j, job in enumerate(sequence):
         for m in range(num_machines):
@@ -131,32 +119,28 @@ def plot_flow_shop_chart(sequence):
     plt.tight_layout()
     plt.show()
 
-# Initial job setup
+
 jobs = [0, 1, 2]
 processing_times = [
-    [3, 7, 4], #Machine 1
-    [5, 2, 6], #Machine 2
-    [8, 4, 3], #Machine 3
+    [3, 7, 4],
+    [5, 2, 6],
+    [8, 4, 3], 
 ]
 
-# Tkinter GUI setup
 root = tk.Tk()
 root.title("Flow Shop Scheduling")
 
 frame = tk.Frame(root)
 frame.pack(pady=20)
 
-# Treeview for displaying jobs
 tree = ttk.Treeview(frame, columns=("Description", "Details", "Makespan"), show='headings')
 tree.heading("Description", text="Description", anchor='center')
 tree.heading("Details", text="Details", anchor='center')
 tree.heading("Makespan", text="Makespan", anchor='center')
 
-# Set the style for headers
 style = ttk.Style()
 style.configure("Treeview.Heading", font=("Helvetica", 10, "bold"))
 
-# Center align columns
 tree.column("Description", anchor='center')
 tree.column("Details", anchor='center')
 tree.column("Makespan", anchor='center')
@@ -166,15 +150,12 @@ tree.pack()
 optimized_order_label = tk.Label(root, text="Optimized Order: ")
 optimized_order_label.pack(pady=10)
 
-# Text widget for optimized order details
 optimized_details_text = tk.Text(root, height=10, width=60, wrap='word', font=("Helvetica", 10))
 optimized_details_text.pack(pady=10)
 
-# Button to calculate orders
 calculate_button = tk.Button(root, text="Calculate Orders", command=calculate_orders)
 calculate_button.pack(pady=10)
 
-# Button to visualize the Gantt chart
 visualize_button = tk.Button(root, text="Visualize Operations", command=visualize_results)
 visualize_button.pack(pady=10)
 
